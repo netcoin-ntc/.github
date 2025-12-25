@@ -1,17 +1,17 @@
-# NetCoin-NTC Organization
+# Netcoin-NTC Organization
 
-Welcome to the NetCoin-NTC organization! We are building the future of decentralized networking with energy-backed consensus.
+Welcome to the Netcoin-NTC organization! We are building the future of decentralized networking with energy-backed consensus.
 
 ## Repositories
 
-- [**netcoin**](https://github.com/netcoin-ntc/netcoin) - Main NetCoin blockchain implementation
+- [**netcoin**](https://github.com/netcoin-ntc/netcoin) - Main Netcoin blockchain implementation
 - [**netcoin-docs**](https://github.com/netcoin-ntc/netcoin-docs) - Documentation and guides
 - [**netcoin-mycelium**](https://github.com/netcoin-ntc/netcoin-mycelium) - Mycelium with PoNW integration
 - [**community**](https://github.com/netcoin-ntc/community) - Community discussions
 
-## About NetCoin
+## About Netcoin
 
-NetCoin implements Proof of Network (PoNW), a revolutionary consensus mechanism that makes computational energy productive by embedding proof-of-work puzzles directly into network routing decisions.
+Netcoin implements Proof of Network (PoNW), a revolutionary consensus mechanism that makes computational energy productive by embedding proof-of-work puzzles directly into network routing decisions.
 
 ### Key Features
 - ⚡ **Energy Verification**: PoW puzzles prove real computational work
@@ -21,7 +21,7 @@ NetCoin implements Proof of Network (PoNW), a revolutionary consensus mechanism 
 - 🏷️ **Premium Aliases**: Unique human-readable addresses
 
 ### Vision
-NetCoin rethinks digital infrastructure by making decentralized networking economically sustainable. Every routing decision contributes to network security and earns tokens for participants.
+Netcoin rethinks digital infrastructure by making decentralized networking economically sustainable. Every routing decision contributes to network security and earns tokens for participants.
 
 ## Getting Started
 
@@ -44,7 +44,7 @@ We welcome contributions! See each repository for specific contribution guidelin
 
 ## License
 
-NetCoin is open-source software. See individual repositories for licensing details.
+Netcoin is open-source software. See individual repositories for licensing details.
 
 ---
 

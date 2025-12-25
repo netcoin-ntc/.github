@@ -16,7 +16,7 @@ What actually happened.
 
 ## Environment
 - OS: [e.g., Ubuntu 22.04]
-- NetCoin Version: [e.g., v0.1.0]
+- Netcoin Version: [e.g., v0.1.0]
 - Rust Version: [e.g., 1.70]
 
 ## Additional Context
