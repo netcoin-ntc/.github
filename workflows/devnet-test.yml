@@ -1,0 +1,112 @@
+name: DevNet Integration Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Enable verbose output'
+        required: false
+        default: false
+        type: boolean
+      keep_data:
+        description: 'Keep test data after completion'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  test-devnet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Rust
+      uses: actions/setup-rust@v1
+      with:
+        rust-version: stable
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Cache Rust dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc
+
+    - name: Build netcoin-core
+      run: |
+        cd netcoin-core
+        cargo build --release
+
+    - name: Build netcoin-miner
+      run: |
+        cd netcoin-miner
+        cargo build --release
+
+    - name: Setup Python for docs (optional)
+      run: |
+        cd netcoin-docs
+        pip install -r requirements.txt || true
+
+    - name: Run DevNet integration tests
+      run: |
+        # Set script arguments based on workflow inputs
+        ARGS=""
+        if [ "${{ github.event.inputs.verbose }}" = "true" ] || [ "${{ vars.VERBOSE_TESTING }}" = "true" ]; then
+          ARGS="$ARGS --verbose"
+        fi
+        if [ "${{ github.event.inputs.keep_data }}" = "true" ]; then
+          ARGS="$ARGS --keep-data"
+        fi
+
+        # Run the automated test script
+        ./test-devnet.sh $ARGS
+
+    - name: Upload test artifacts (on failure)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: devnet-test-artifacts
+        path: |
+          netcoin-core/devnet-data/
+          netcoin-core/devnet-config.json
+          /tmp/test_wallet_*.txt
+          /tmp/mining_output.log
+        retention-days: 7
+
+    - name: Cleanup test artifacts
+      if: always()
+      run: |
+        # Clean up test data unless keep_data is true
+        if [ "${{ github.event.inputs.keep_data }}" != "true" ]; then
+          rm -rf netcoin-core/devnet-data netcoin-core/devnet-config.json
+          rm -f /tmp/test_wallet_*.txt /tmp/mining_output.log
+        fi
